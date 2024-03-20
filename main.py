@@ -97,7 +97,9 @@ balloon = Balloon()
 class Cloud(pygame.sprite.Sprite):
     def __init__(self, speed):
         super().__init__()
+
         w, h = load_image("cloud_shape_5.png").get_size()
+
         self.frames = [pygame.transform.scale(load_image("cloud_shape_1.png"), (w, h)),
                        pygame.transform.scale(load_image("cloud_shape_2.png"), (w, h)),
                        pygame.transform.scale(load_image("cloud_shape_3.png"), (w, h)),
@@ -106,9 +108,9 @@ class Cloud(pygame.sprite.Sprite):
                        pygame.transform.scale(load_image("cloud_shape_4.png"), (w, h)),
                        pygame.transform.scale(load_image("cloud_shape_3.png"), (w, h)),
                        pygame.transform.scale(load_image("cloud_shape_2.png"), (w, h))]
+
         self.cur_frame = 0
         self.image = self.frames[self.cur_frame]
-
         self.rect = self.image.get_rect()
         self.rect.x = random.randint(0, WIDTH - self.rect.width)
         self.rect.y = 0
@@ -154,6 +156,7 @@ def terminate():
 def start_screen():
     global level
     intro = True
+
     while intro:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -164,12 +167,17 @@ def start_screen():
 
         font = pygame.font.SysFont(None, 30)
 
-        choose_level_text = font.render("Выбери уровень", True, (29, 41, 81))
-        screen.blit(choose_level_text, (WIDTH // 2 - choose_level_text.get_width() // 2, HEIGHT // 2 - 75))
+        rules = font.render("Escape clouds!", True, (29, 41, 81))
+        screen.blit(rules, (WIDTH // 2 - rules.get_width() // 2, HEIGHT // 2 - 150))
+
+        choose_level_text = font.render("Choose level", True, (29, 41, 81))
+        screen.blit(choose_level_text, (WIDTH // 2 - choose_level_text.get_width() // 2,
+                                        HEIGHT // 2 - 75))
 
         level_buttons = []
         for i in range(5):
-            button_rect = pygame.Rect(WIDTH // 2 - 270 + i * 120, HEIGHT // 2 - 30, 50, 50)
+            button_rect = pygame.Rect(WIDTH // 2 - 270 + i * 120,
+                                      HEIGHT // 2 - 30, 50, 50)
             button_color = (0, 128, 129)
             if button_rect.collidepoint(pygame.mouse.get_pos()):
                 button_color = (0, 100, 100)
@@ -180,7 +188,8 @@ def start_screen():
             level_buttons.append(button_rect)
 
         best_score_text = font.render("Рекорд: " + str(load_best_score()), True, (29, 41, 81))
-        screen.blit(best_score_text, (WIDTH // 2 - best_score_text.get_width() // 2, HEIGHT // 2 + 75))
+        screen.blit(best_score_text, (WIDTH // 2 - best_score_text.get_width() // 2,
+                                      HEIGHT // 2 + 75))
 
         pygame.display.update()
         clock.tick(15)
@@ -202,6 +211,7 @@ def game_over_screen():
     game_over = True
     if score > load_best_score():
         save_best_score(score)
+
     while game_over:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -214,9 +224,11 @@ def game_over_screen():
         screen.blit(game_over_text, (WIDTH // 2 - game_over_text.get_width() // 2,
                                      HEIGHT // 4 - game_over_text.get_height() // 2))
         score_text = font.render("Score: " + str(score), True, (29, 41, 81))
-        screen.blit(score_text, (WIDTH // 2 - score_text.get_width() // 2, HEIGHT // 4 + 50))
+        screen.blit(score_text, (WIDTH // 2 - score_text.get_width() // 2,
+                                 HEIGHT // 4 + 50))
 
-        restart_button_rect = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 4 + 100, 200, 50)
+        restart_button_rect = pygame.Rect(WIDTH // 2 - 100,
+                                          HEIGHT // 4 + 100, 200, 50)
         button_color = (0, 128, 129)
         if restart_button_rect.collidepoint(pygame.mouse.get_pos()):
             button_color = (0, 100, 100)
@@ -225,7 +237,8 @@ def game_over_screen():
         screen.blit(restart_text, (restart_button_rect.centerx - restart_text.get_width() // 2,
                                    restart_button_rect.centery - restart_text.get_height() // 2))
 
-        choose_level_button_rect = pygame.Rect(WIDTH // 2 - 125, HEIGHT // 4 + 175, 250, 50)
+        choose_level_button_rect = pygame.Rect(WIDTH // 2 - 125,
+                                               HEIGHT // 4 + 175, 250, 50)
         button_color = (0, 128, 129)
         if choose_level_button_rect.collidepoint(pygame.mouse.get_pos()):
             button_color = (0, 100, 100)
@@ -236,7 +249,8 @@ def game_over_screen():
 
         font = pygame.font.SysFont(None, 30)
         best_score_text = font.render("Best score: " + str(load_best_score()), True, (29, 41, 81))
-        screen.blit(best_score_text, (WIDTH // 2 - best_score_text.get_width() // 2, HEIGHT // 4 + 275))
+        screen.blit(best_score_text, (WIDTH // 2 - best_score_text.get_width() // 2,
+                                      HEIGHT // 4 + 275))
 
         pygame.display.update()
         clock.tick(15)
